@@ -1,0 +1,132 @@
+.scholarship-grant-container {
+  padding: 20px;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.scholarship-grant-card {
+  background: white;
+  border-radius: 8px;
+  padding: 24px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.scholarship-grant-card h2 {
+  margin-bottom: 20px;
+  color: #1f2937;
+  font-size: 24px;
+}
+
+.scholarship-grant-error,
+.scholarship-grant-success {
+  padding: 12px;
+  border-radius: 6px;
+  margin-bottom: 16px;
+  font-size: 14px;
+}
+
+.scholarship-grant-error {
+  background: #fee2e2;
+  color: #991b1b;
+}
+
+.scholarship-grant-success {
+  background: #dcfce7;
+  color: #15803d;
+}
+
+.scholarship-grant-summary {
+  background: #f9fafb;
+  border: 1px solid #e5e7eb;
+  border-radius: 6px;
+  padding: 12px;
+  margin-bottom: 20px;
+  font-size: 13px;
+}
+
+.scholarship-grant-summary div {
+  margin-bottom: 8px;
+}
+
+.scholarship-grant-form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.form-group label {
+  font-weight: 600;
+  color: #374151;
+  font-size: 14px;
+}
+
+.scholarship-grant-textarea,
+.scholarship-grant-input {
+  padding: 10px 12px;
+  border: 1px solid #d1d5db;
+  border-radius: 6px;
+  font-family: inherit;
+  font-size: 14px;
+}
+
+.scholarship-grant-textarea {
+  resize: vertical;
+  min-height: 100px;
+}
+
+.form-group small {
+  color: #6b7280;
+  font-size: 12px;
+}
+
+.scholarship-grant-info {
+  background: #eff6ff;
+  border: 1px solid #bfdbfe;
+  border-radius: 6px;
+  padding: 12px;
+  font-size: 13px;
+}
+
+.scholarship-grant-info p {
+  margin: 0 0 8px 0;
+  font-weight: 600;
+  color: #0c4a6e;
+}
+
+.scholarship-grant-info ul {
+  margin: 0;
+  padding-left: 20px;
+}
+
+.scholarship-grant-info li {
+  color: #0c4a6e;
+  margin-bottom: 4px;
+}
+
+.scholarship-grant-submit-btn {
+  padding: 10px 16px;
+  background: #16a34a;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  font-weight: 600;
+  cursor: pointer;
+  font-size: 14px;
+  transition: background 0.3s;
+  margin-top: 8px;
+}
+
+.scholarship-grant-submit-btn:hover:not(:disabled) {
+  background: #15803d;
+}
+
+.scholarship-grant-submit-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}

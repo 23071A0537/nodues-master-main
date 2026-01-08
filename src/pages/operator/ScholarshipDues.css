@@ -1,0 +1,104 @@
+.scholarship-dues-container {
+  padding: 20px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.scholarship-dues-title {
+  margin-bottom: 20px;
+  color: #1f2937;
+  font-size: 28px;
+  font-weight: 700;
+}
+
+.scholarship-dues-summary {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+.summary-card {
+  background: white;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  padding: 16px;
+  text-align: center;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.summary-label {
+  font-size: 14px;
+  color: #6b7280;
+  margin-bottom: 8px;
+}
+
+.summary-value {
+  font-size: 32px;
+  font-weight: 700;
+  color: #1f2937;
+}
+
+.scholarship-dues-search {
+  width: 100%;
+  padding: 10px 12px;
+  border: 1px solid #d1d5db;
+  border-radius: 6px;
+  margin-bottom: 20px;
+  font-size: 14px;
+}
+
+.scholarship-dues-table {
+  width: 100%;
+  border-collapse: collapse;
+  background: white;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.scholarship-dues-table thead {
+  background: #f3f4f6;
+  border-bottom: 2px solid #e5e7eb;
+}
+
+.scholarship-dues-table th {
+  padding: 12px;
+  text-align: left;
+  font-weight: 600;
+  color: #374151;
+  font-size: 13px;
+}
+
+.scholarship-dues-table td {
+  padding: 12px;
+  border-bottom: 1px solid #e5e7eb;
+  font-size: 13px;
+}
+
+.scholarship-dues-table tbody tr:hover {
+  background: #fafafa;
+}
+
+.scholarship-dues-no-data {
+  text-align: center;
+  color: #9ca3af;
+  padding: 24px !important;
+  font-style: italic;
+}
+
+.scholarship-dues-grant-btn {
+  display: inline-block;
+  padding: 6px 12px;
+  background: #3b82f6;
+  color: white;
+  border-radius: 6px;
+  text-decoration: none;
+  font-size: 12px;
+  font-weight: 600;
+  transition: background 0.3s;
+}
+
+.scholarship-dues-grant-btn:hover {
+  background: #2563eb;
+}

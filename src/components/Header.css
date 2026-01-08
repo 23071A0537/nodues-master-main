@@ -1,0 +1,251 @@
+/* ---------- Base Header Styling ---------- */
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: white;
+  padding: 8px 20px;
+  box-shadow: 0 1px 4px rgba(99, 102, 241, 0.06);
+  font-family: "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  color: #4f46e5;
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  transition: all 0.3s ease-in-out;
+  backdrop-filter: blur(8px);
+  position: relative;
+}
+
+/* ---------- Left Section ---------- */
+.header-left {
+  display: flex;
+  align-items: center;
+  gap: 0;
+  flex-shrink: 0;
+  min-width: 0;
+}
+
+.header-logo {
+  width: 56px;
+  height: 56px;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  flex-shrink: 0;
+}
+
+.header-logo:hover {
+  transform: scale(1.05);
+  box-shadow: 0 6px 30px rgba(99, 102, 241, 0.25);
+}
+
+/* ---------- Text Section ---------- */
+.header-text {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  min-width: 0;
+  flex: 1;
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.header-title {
+  font-size: 1.7rem;
+  font-weight: 700;
+  margin: 0;
+  color: #3730a3;
+  letter-spacing: 0.2px;
+  text-shadow: 0 1px 2px rgba(79, 70, 229, 0.1);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.header-address {
+  font-size: 0.9rem;
+  color: #6b7cff;
+  margin-top: 1px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: none;
+}
+
+@media (min-width: 1200px) {
+  .header-address {
+    display: block;
+  }
+}
+
+/* ---------- Right Section ---------- */
+.header-info {
+  cursor: default;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #6366f1;
+  flex-shrink: 0;
+  position: relative;
+  padding: 4px;
+
+  transition: all 0.3s ease;
+}
+
+.header-info:hover {
+  background: rgba(99, 102, 241, 0.08);
+}
+
+.profile-icon {
+  color: #6366f1;
+  transition: color 0.3s ease;
+}
+
+.header-info:hover .profile-icon {
+  color: #4f46e5;
+}
+
+.header-right {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-shrink: 0;
+  margin-left: auto;
+}
+
+/* Logout button */
+.btn-logout {
+  display: flex;
+  align-items: center;
+  gap: 3px;
+  padding: 4px 10px;
+  border-radius: 6px;
+  font-size: 0.85rem;
+  border: none;
+  background-color: #dc2626;
+  color: white;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 1px 3px rgba(220, 38, 38, 0.2);
+}
+
+.btn-logout:hover {
+  background-color: #b91c1c;
+  box-shadow: 0 2px 8px rgba(185, 28, 28, 0.3);
+  transform: translateY(-1px);
+}
+
+/* Ensure header info + logout are responsive */
+@media (max-width: 860px) {
+  .header {
+    position: relative;
+  }
+
+  .header-text {
+    position: static;
+    transform: none;
+    flex: none;
+  }
+
+  .header-right {
+    margin-left: auto;
+  }
+  .btn-logout {
+    padding: 5px 12px;
+    font-size: 0.9rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .btn-logout {
+    padding: 4px 10px;
+    font-size: 0.75rem;
+    gap: 2px;
+  }
+
+  .header-info {
+    padding: 2px;
+  }
+}
+
+/* ---------- Tooltip for Email ---------- */
+.header-info[title]:hover::after {
+  content: attr(title);
+  position: absolute;
+  bottom: -36px;
+  right: 0;
+  background: #4f46e5;
+  color: #fff;
+  padding: 6px 10px;
+  font-size: 0.8rem;
+  white-space: nowrap;
+  box-shadow: 0 4px 10px rgba(79, 70, 229, 0.25);
+  opacity: 0;
+  transform: translateY(-6px);
+  animation: fadeInTooltip 0.3s forwards;
+}
+
+@keyframes fadeInTooltip {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* ---------- Hover Glow Effect ---------- */
+.header:hover {
+  box-shadow: 0 1px 5px rgba(99, 102, 241, 0.1);
+}
+
+/* ---------- Responsive Design ---------- */
+@media (max-width: 860px) {
+  .header {
+    flex-direction: row;
+    align-items: center;
+    text-align: left;
+    padding: 6px 16px;
+    gap: 8px;
+  }
+
+  .header-left {
+    gap: 8px;
+  }
+
+  .header-logo {
+    width: 36px;
+    height: 36px;
+  }
+
+  .header-title {
+    font-size: 0.9rem;
+  }
+
+  .header-address {
+    display: none;
+  }
+
+  .header-info[title]:hover::after {
+    bottom: -35px;
+  }
+}
+
+@media (max-width: 480px) {
+  .header {
+    padding: 6px 12px;
+  }
+
+  .header-title {
+    font-size: 0.85rem;
+  }
+  .header-logo {
+    width: 32px;
+    height: 32px;
+  }
+
+  .btn-logout {
+    padding: 3px 8px;
+    font-size: 0.75rem;
+  }
+}

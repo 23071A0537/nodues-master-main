@@ -1,0 +1,574 @@
+.clear-due-table-wrapper {
+  max-height: 500px; /* adjust height as needed */
+  overflow-y: auto;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+}
+
+.clear-due-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.clear-due-table th,
+.clear-due-table td {
+  padding: 10px;
+  text-align: left;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.clear-due-table thead th {
+  position: sticky;
+  top: 0;
+  background-color: #f1f5f9;
+  z-index: 10;
+}
+
+/* Container */
+.clear-due-container {
+  padding: 24px;
+  background: #f8fafc;
+  border-radius: 14px;
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.08);
+  font-family: var(--font-family);
+}
+
+.clear-due-title {
+  font-size: 22px;
+  margin-bottom: 15px;
+  color: #1e3a8a;
+}
+
+/* Search Box */
+.clear-due-search {
+  width: 100%;
+  max-width: 400px;
+  padding: 8px 12px;
+  margin-bottom: 15px;
+  border-radius: 8px;
+  border: 1.5px solid #d1d5db;
+  font-size: 14px;
+  outline: none;
+  transition: border-color 0.3s, box-shadow 0.3s;
+}
+
+.clear-due-search:focus {
+  border-color: #2563eb;
+  box-shadow: 0 0 6px rgba(37, 99, 235, 0.4);
+}
+
+/* Loading & Error */
+.clear-due-loading {
+  font-size: 14px;
+  color: #555;
+}
+
+.clear-due-error {
+  color: #dc2626;
+  font-weight: bold;
+}
+
+/* Table */
+.clear-due-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 15px;
+  background: #fff;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow: 0px 2px 6px rgba(0, 0, 0, 0.1);
+}
+
+.clear-due-table th,
+.clear-due-table td {
+  padding: 10px;
+  text-align: left;
+  border-bottom: 1px solid #e5e7eb;
+}
+
+.clear-due-table th {
+  background-color: #f1f5f9;
+  color: #111827;
+  font-weight: 600;
+}
+
+.clear-due-no-data {
+  text-align: center;
+  padding: 15px;
+  color: #6b7280;
+}
+
+.clear-due-row-cleared {
+  background-color: #f0fdf4;
+}
+
+/* Status */
+.clear-due-status.pending {
+  color: #f59e0b;
+  font-weight: bold;
+}
+
+.clear-due-status.cleared {
+  color: #16a34a;
+  font-weight: bold;
+}
+
+/* Payment Status */
+.clear-due-payment-done {
+  color: green;
+  font-weight: bold;
+}
+
+.clear-due-payment-due {
+  color: red;
+  font-weight: bold;
+}
+
+/* Clear Button */
+.clear-due-btn-clear {
+  background-color: #3b82f6;
+  color: white;
+  border: none;
+  padding: 6px 14px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 0.9rem;
+  font-weight: 600;
+  transition: all 0.2s ease;
+}
+
+.clear-due-btn-clear:hover:not(:disabled) {
+  background-color: #2563eb;
+  transform: translateY(-1px);
+}
+
+.clear-due-btn-clear:disabled {
+  background-color: #cbd5e1;
+  color: #94a3b8;
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+.clear-due-btn-clear:disabled::after {
+  content: " 🔒";
+}
+
+.clear-due-filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  align-items: center;
+  background: #eef3ff;
+  padding: 12px 16px;
+  border-radius: 12px;
+  margin-bottom: 15px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+}
+
+.clear-due-date-container {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.clear-due-date {
+  padding: 6px 10px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  background-color: white;
+}
+
+.clear-due-select {
+  padding: 6px 10px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+  background-color: white;
+  cursor: pointer;
+}
+
+.clear-due-select:hover {
+  border-color: #1e3a8a;
+}
+
+/* New Summary Section Styles */
+.clear-due-summary-section {
+  background: white;
+  padding: 16px;
+  border-radius: 12px;
+  margin-bottom: 16px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+/* Parent blocks container: place blocks adjacent */
+.summary-blocks {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 12px;
+  align-items: start;
+}
+
+.summary-section-title {
+  font-size: 15px;
+  font-weight: 700;
+  color: #1e293b;
+  margin: 0 0 10px 0;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.summary-grid {
+  display: grid;
+  grid-template-columns: 1fr; /* Internal cards stack within each block */
+  gap: 10px;
+  margin-bottom: 12px;
+}
+
+.summary-card {
+  background: white;
+  padding: 10px;
+  border-radius: 8px;
+  border: 1px solid #e2e8f0;
+  transition: all 0.3s ease;
+}
+
+.summary-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.summary-card-info {
+  border-color: #3b82f6;
+  background: #eff6ff;
+}
+.summary-card-pending {
+  border-color: #f59e0b;
+  background: #fffbeb;
+}
+.summary-card-success {
+  border-color: #10b981;
+  background: #f0fdf4;
+}
+.summary-card-permission {
+  border-color: #8b5cf6;
+  background: #faf5ff;
+}
+
+.summary-card-header {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: 8px;
+}
+
+.summary-icon {
+  font-size: 14px;
+}
+
+.summary-label {
+  font-size: 11px;
+  font-weight: 600;
+  color: #64748b;
+  text-transform: uppercase;
+  letter-spacing: 0.4px;
+}
+
+.summary-value {
+  font-size: 18px;
+  font-weight: 700;
+  color: #1e293b;
+  display: flex;
+  align-items: baseline;
+  gap: 6px;
+}
+
+.summary-total {
+  font-size: 12px;
+  font-weight: 500;
+  color: #94a3b8;
+}
+
+.no-payment-badge {
+  font-size: 10px;
+  font-weight: 600;
+  padding: 3px 6px;
+  background-color: #ddd6fe;
+  color: #5b21b6;
+  border-radius: 10px;
+  margin-left: 6px;
+}
+
+.summary-category-section {
+  margin-bottom: 12px;
+}
+
+.category-section-title {
+  font-size: 13px;
+  font-weight: 600;
+  color: #475569;
+}
+
+.summary-grid-small {
+  display: grid;
+  grid-template-columns: 1fr; /* Internal small cards stack within each block */
+  gap: 8px;
+}
+
+.summary-card-small {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px;
+  border-radius: 8px;
+  border: 1px solid #e2e8f0;
+  transition: all 0.3s ease;
+}
+
+.summary-card-small:hover {
+  transform: translateX(4px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+.summary-card-payable {
+  border-color: #f59e0b;
+  background: #fffbeb;
+}
+
+.summary-card-non-payable {
+  border-color: #3b82f6;
+  background: #eff6ff;
+}
+
+.summary-card-icon {
+  font-size: 18px;
+  line-height: 1;
+}
+
+.summary-card-content {
+  flex: 1;
+}
+
+.summary-card-label {
+  font-size: 10px;
+  font-weight: 600;
+  color: #64748b;
+  margin-bottom: 2px;
+}
+
+.summary-card-value {
+  font-size: 16px;
+  font-weight: 700;
+  color: #1e293b;
+}
+
+.summary-amount-section {
+  display: grid;
+  grid-template-columns: 1fr; /* Internal amount cards stack within each block */
+  gap: 10px;
+  padding-top: 10px;
+  border-top: 1px solid #e2e8f0;
+}
+
+.amount-card {
+  padding: 10px;
+  border-radius: 8px;
+  text-align: center;
+}
+
+.amount-card-total {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+}
+
+.amount-card-filtered {
+  background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+  color: white;
+}
+
+.amount-card-label {
+  font-size: 10px;
+  font-weight: 600;
+  opacity: 0.9;
+  margin-bottom: 4px;
+  text-transform: uppercase;
+  letter-spacing: 0.4px;
+}
+
+.amount-card-value {
+  font-size: 20px;
+}
+
+.amount-card-value {
+  font-size: 20px;
+  font-weight: 700;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .summary-blocks {
+    grid-template-columns: 1fr; /* Blocks stack on small screens */
+  }
+  .summary-grid,
+  .summary-grid-small,
+  .summary-amount-section {
+    grid-template-columns: 1fr;
+  }
+
+  .summary-value {
+    font-size: 28px;
+  }
+
+  .summary-card-value {
+    font-size: 20px;
+  }
+}
+
+.clear-due-summary {
+  background: #f0f4ff;
+  padding: 10px 15px;
+  border-radius: 8px;
+  margin-bottom: 15px;
+  display: flex;
+  justify-content: space-between;
+  font-weight: 500;
+}
+
+/* Disabled Clear Button with Tooltip */
+.clear-due-btn-clear:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
+  opacity: 0.7;
+}
+
+.clear-due-btn-clear:disabled::after {
+  content: attr(data-tooltip);
+  position: absolute;
+  bottom: 125%;
+  left: 5%;
+  transform: translateX(-50%);
+  background-color: #1e3a8a;
+  color: #fff;
+  padding: 6px 10px;
+  font-size: 0.85rem;
+  border-radius: 6px;
+  white-space: nowrap;
+  z-index: 10;
+  opacity: 0;
+  pointer-events: none;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  transition: opacity 0.2s;
+}
+
+.clear-due-btn-clear:disabled:hover::after {
+  opacity: 1;
+}
+
+.clear-due-btn-clear:disabled::before {
+  content: "";
+  position: absolute;
+  bottom: 115%;
+  left: 10%;
+  transform: translateX(-50%);
+  border-width: 6px;
+  border-style: solid;
+  border-color: #1e3a8a transparent transparent transparent;
+  opacity: 0;
+  transition: opacity 0.2s;
+}
+
+.clear-due-btn-clear:disabled:hover::before {
+  opacity: 1;
+}
+
+/* Tooltip left position if near right edge */
+.clear-due-btn-clear:disabled[data-tooltip-position="left"]::after {
+  left: auto;
+  right: 100%;
+  transform: translateX(0%);
+}
+
+.clear-due-btn-clear:disabled[data-tooltip-position="left"]::before {
+  left: auto;
+  right: 10%;
+  transform: rotate(180deg);
+}
+
+/* Modal Overlay */
+.clear-due-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 2000;
+}
+
+/* Modal */
+.clear-due-modal {
+  background: #fff;
+  padding: 20px 30px;
+  border-radius: 10px;
+  max-width: 400px;
+  width: 90%;
+  text-align: center;
+  box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+.clear-due-modal-title {
+  margin-bottom: 10px;
+  font-size: 20px;
+  color: #1e3a8a;
+}
+
+.clear-due-modal-text {
+  margin-bottom: 20px;
+  color: #374151;
+}
+
+/* Modal Actions */
+.clear-due-modal-actions {
+  display: flex;
+  justify-content: center;
+  gap: 15px;
+}
+
+.clear-due-btn-cancel {
+  background-color: #dc2626;
+  border: none;
+  color: white;
+  padding: 8px 16px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.clear-due-btn-cancel:hover {
+  background-color: #b91c1c;
+}
+
+.clear-due-btn-confirm {
+  background-color: #16a34a;
+  border: none;
+  color: white;
+  padding: 8px 16px;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.clear-due-btn-confirm:hover {
+  background-color: #15803d;
+}
+
+/* Responsive table horizontal scroll */
+@media (max-width: 1024px) {
+  .clear-due-table {
+    display: block;
+    overflow-x: auto;
+    white-space: nowrap;
+  }
+}
