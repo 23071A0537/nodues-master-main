@@ -4,6 +4,7 @@ const User = require('../models/User');
 const Student = require('../models/Student');
 const Faculty = require('../models/Faculty');
 const Due = require('../models/Due');
+const { FacultyDesignation } = require('../models/FacultyDesignation');
 const bcrypt = require('bcryptjs');
 const xlsx = require('xlsx');
 const fs = require('fs');
@@ -427,7 +428,9 @@ exports.importFaculty = async (req, res) => {
         facultyId: empCode,
         name: empName,
         department: department._id,
-        designation: designation || "",
+        designation: designation
+          ? designation.split(",").map((d) => d.trim()).filter((d) => d)
+          : [],
         email: email || "",
         mobile: mobile || "",
         role: "faculty",
@@ -855,6 +858,17 @@ exports.downloadDuesSample = async (req, res) => {
   } catch (err) {
     console.error('Error generating dues sample:', err);
     res.status(500).json({ message: 'Failed to generate sample file', error: err.message });
+  }
+};
+
+// --- Get Designations ---
+exports.getDesignations = async (req, res) => {
+  try {
+    const designations = await FacultyDesignation.find();
+    res.json(designations);
+  } catch (err) {
+    console.error('Error fetching designations:', err);
+    res.status(500).json({ message: 'Failed to fetch designations', error: err.message });
   }
 };
 

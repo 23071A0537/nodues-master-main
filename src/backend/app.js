@@ -8,6 +8,7 @@ const sanitizer = require("./middleware/inputSanitizer");
 const adminRoutes = require("./routes/adminRoutes");
 const operatorRoutes = require("./routes/operatorRoutes");
 const publicRoutes = require("./routes/publicRoutes");
+const { initializeDesignations } = require("./models/FacultyDesignation");
 
 const app = express();
 
@@ -64,6 +65,9 @@ const connectDB = async (retries = 5) => {
       socketTimeoutMS: 45000,
     });
     console.log("Connected to MongoDB");
+    
+    // Initialize designations after successful connection
+    await initializeDesignations();
   } catch (err) {
     console.error("MongoDB connection error:", err);
     if (retries > 0) {

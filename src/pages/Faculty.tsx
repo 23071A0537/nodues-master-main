@@ -14,118 +14,13 @@ type FacultyMember = {
   employeeCode: string;
   name: string;
   department?: { _id: string; name: string };
-  designation?: string;
+  designation?: string | string[];
   email?: string;
   mobile?: string;
   role: string;
 };
 
-const TEACHING_DESIGNATIONS = [
-  "Professor",
-  "Assistant Professor",
-  "Senior Assistant Professor",
-  "Associate Professor",
-  "Professor of Practice",
-  "Dean (Student Progression)",
-  "Dean (IQAC)",
-  "Dean (Academics)",
-  "Deputy Dean (Administration & Finance)",
-  "Head of Department",
-  "Head (Innovation, Incubation & Entrepreneurship)",
-  "Director (Advancement)",
-  "Principal",
-  "Controller of Examinations",
-  "RDC Head",
-  "Assistant Computer Programmer",
-];
-
-
-const NON_TEACHING_DESIGNATIONS = [
-  "Skilled Assistant",
-  "Jr.Assistant",
-  "JCP",
-  "Computer Operator",
-  "Nurse",
-  "Plumber",
-  "Attender",
-  "Jr. Assistant",
-  "Professor of Practice",
-  "Manager - Marketing",
-  "Sweeper / Helper",
-  "Record Assistant",
-  "Asst. Comp. Programmer",
-  "Junior Computer  Programmer",
-  "Network &H/W Programmer",
-  "Other Satff",
-  "Driver",
-  "Chief Security & Vigilance Officer",
-  "Site Engineer",
-  "Library Assistant",
-  "FOE",
-  "ADMIN OFFICER",
-  "Soft Skills Trainer",
-  "Head of the Department",
-  "Medical Officer",
-  "Residential Supervisior",
-  "Executive Assistant",
-  "Helper",
-  "Jr.Accountant",
-  "Trainer",
-  "Jr. Skilled Assistant",
-  "Sr. Skilled Asst.",
-  "Site Supervisor",
-  "House Keeper",
-  "Sr. Site Supervisor",
-  "Network and H/w Programmer",
-  "Assistant Administrative Officer",
-  "G M ( A & F)",
-  "Sweeper",
-  "Corporate Relation Officer",
-  "Manager Estates",
-  "Manager",
-  "Team lead for CSR Funds",
-  "Executive Stores",
-  "Networking Assistant",
-  "Electrician",
-  "Non Resident Hostel Supervisor",
-  "Yoga Teacher",
-  "HR Manager",
-  "Manager - Marketing & Communications",
-  "Senior Accountant",
-  "Consultant / Advisor",
-  "Sr. Asst. Librarian",
-  "computer programmer",
-  "sys.adm",
-  "Officer - Learning & Development",
-  "Accounts Officer",
-  "Sr Assistant",
-  "Basketball Trainer",
-  "Assistant Training Placement Officer",
-  "Gym Trainer",
-  "Mason",
-  "Project Manager",
-  "Head Corporate Relations",
-  "Supervisor",
-  "Jr. Asst. Librarian",
-  "Legal Advisor",
-  "Superintendent",
-  "Purchase Manager",
-  "Senior Manager",
-  "Assistant Professor",
-  "Accountant",
-  "Head - Purchase",
-  "Jr.SE",
-  "Senior Engineer",
-  "Sr. Instructor",
-  "Jr Network Engineer",
-  "Sr. Manager",
-  "Senior Administrative Assistant",
-  "Security",
-];
-
-const DESIGNATIONS = [...TEACHING_DESIGNATIONS, ...NON_TEACHING_DESIGNATIONS];
-
-const ROLES = ["super_admin", "operator", "hod", "faculty"];
+const ROLES = ["super_admin", "department_operator", "hod", "faculty"];
 
 const requiredFields = [
   "S.No",
@@ -160,10 +55,14 @@ const Faculty: React.FC = () => {
   const [error, setError] = useState("");
   const [searchTerm, setSearchTerm] = useState("");
   const [editId, setEditId] = useState<string | null>(null);
-  const [editDesignation, setEditDesignation] = useState("");
+  const [editDesignations, setEditDesignations] = useState<string[]>([]);
   const [editRole, setEditRole] = useState("");
   const [saving, setSaving] = useState(false);
   const [saveError, setSaveError] = useState("");
+  // Dropdown visibility state
+  const [openDesignationDropdown, setOpenDesignationDropdown] = useState<
+    string | null
+  >(null);
   // File upload states
   const [file, setFile] = useState<File | null>(null);
   const [uploading, setUploading] = useState(false);
@@ -180,10 +79,47 @@ const Faculty: React.FC = () => {
   const [selectedStaffType, setSelectedStaffType] = useState<
     "teaching" | "non-teaching"
   >("teaching");
+  // Designations from database
+  const [designations, setDesignations] = useState<{
+    teaching: string[];
+    "non-teaching": string[];
+  }>({ teaching: [], "non-teaching": [] });
+  const [designationsLoading, setDesignationsLoading] = useState(true);
+
+  useEffect(() => {
+    fetchDesignations();
+  }, []);
 
   useEffect(() => {
     fetchFaculty();
   }, [staffTypeFilter]);
+
+  const fetchDesignations = async () => {
+    setDesignationsLoading(true);
+    try {
+      const res = await api.get("/admin/designations");
+      const designationMap = {
+        teaching: [] as string[],
+        "non-teaching": [] as string[],
+      };
+
+      res.data.forEach(
+        (item: { staffType: string; designations: string[] }) => {
+          if (item.staffType === "teaching") {
+            designationMap.teaching = item.designations;
+          } else if (item.staffType === "non-teaching") {
+            designationMap["non-teaching"] = item.designations;
+          }
+        }
+      );
+
+      setDesignations(designationMap);
+    } catch (err) {
+      console.error("Failed to load designations", err);
+      setDesignations({ teaching: [], "non-teaching": [] });
+    }
+    setDesignationsLoading(false);
+  };
 
   const fetchFaculty = async () => {
     setLoading(true);
@@ -207,16 +143,35 @@ const Faculty: React.FC = () => {
 
   const startEditing = (f: FacultyMember) => {
     setEditId(f._id);
-    setEditDesignation(f.designation || "");
+
+    // Get the list of available designations for this staff type
+    const availableDesignations =
+      f.staffType === "teaching"
+        ? designations.teaching
+        : designations["non-teaching"];
+
+    // Load designations but filter out old ones that are NOT in the current database list
+    const currentDesignations = Array.isArray(f.designation)
+      ? f.designation
+      : f.designation
+      ? [f.designation]
+      : [];
+
+    const filteredDesignations = currentDesignations.filter((d) =>
+      availableDesignations.includes(d)
+    );
+
+    setEditDesignations(filteredDesignations);
     setEditRole(f.role);
     setSaveError("");
   };
 
   const cancelEditing = () => {
     setEditId(null);
-    setEditDesignation("");
+    setEditDesignations([]);
     setEditRole("");
     setSaveError("");
+    setOpenDesignationDropdown(null);
   };
 
   // Added missing file change logic for upload
@@ -321,25 +276,34 @@ const Faculty: React.FC = () => {
   };
 
   const saveChanges = async () => {
-    if (!editDesignation || !editRole) {
-      setSaveError("Please select both designation and role.");
+    if (editDesignations.length === 0 || !editRole) {
+      setSaveError("Please select at least one designation and a role.");
       return;
     }
     setSaving(true);
     try {
       await api.put(`/admin/faculty/${editId}`, {
-        designation: editDesignation,
+        designation: editDesignations,
         role: editRole,
       });
       setEditId(null);
-      setEditDesignation("");
+      setEditDesignations([]);
       setEditRole("");
       setSaveError("");
+      setOpenDesignationDropdown(null);
       await fetchFaculty();
     } catch (err: any) {
       setSaveError(err?.response?.data?.message || "Save failed.");
     }
     setSaving(false);
+  };
+
+  const handleDesignationToggle = (designation: string) => {
+    setEditDesignations((prev) =>
+      prev.includes(designation)
+        ? prev.filter((d) => d !== designation)
+        : [...prev, designation]
+    );
   };
 
   const handleDownloadSample = async () => {
@@ -476,24 +440,147 @@ const Faculty: React.FC = () => {
                 <div className="card-body">
                   <label>Designation:</label>
                   {isEditing ? (
-                    <select
-                      value={editDesignation}
-                      onChange={(e) => setEditDesignation(e.target.value)}
-                      disabled={saving}
-                      className="edit-select"
-                    >
-                      <option value="">Select Designation</option>
-                      {(f.staffType === "teaching"
-                        ? TEACHING_DESIGNATIONS
-                        : NON_TEACHING_DESIGNATIONS
-                      ).map((d) => (
-                        <option key={d} value={d}>
-                          {d}
-                        </option>
-                      ))}
-                    </select>
+                    <div style={{ position: "relative", marginBottom: "12px" }}>
+                      <button
+                        type="button"
+                        onClick={() =>
+                          setOpenDesignationDropdown(
+                            openDesignationDropdown === f._id ? null : f._id
+                          )
+                        }
+                        disabled={saving || designationsLoading}
+                        style={{
+                          width: "100%",
+                          padding: "10px",
+                          border: "2px solid #e5e7eb",
+                          borderRadius: "8px",
+                          backgroundColor: "white",
+                          cursor: "pointer",
+                          textAlign: "left",
+                          fontSize: "14px",
+                        }}
+                      >
+                        {editDesignations.length === 0
+                          ? "Select Designations"
+                          : editDesignations.join(" & ")}
+                      </button>
+
+                      {openDesignationDropdown === f._id && (
+                        <div
+                          style={{
+                            position: "absolute",
+                            top: "100%",
+                            left: 0,
+                            right: 0,
+                            backgroundColor: "white",
+                            border: "2px solid #e5e7eb",
+                            borderTop: "none",
+                            borderRadius: "0 0 8px 8px",
+                            maxHeight: "250px",
+                            overflowY: "auto",
+                            zIndex: 1000,
+                            boxShadow: "0 4px 6px rgba(0, 0, 0, 0.1)",
+                          }}
+                        >
+                          {(f.staffType === "teaching"
+                            ? designations.teaching
+                            : designations["non-teaching"]
+                          )
+                            .sort()
+                            .map((d) => (
+                              <label
+                                key={d}
+                                style={{
+                                  display: "flex",
+                                  alignItems: "center",
+                                  padding: "10px 12px",
+                                  borderBottom: "1px solid #f0f0f0",
+                                  cursor: "pointer",
+                                  fontSize: "14px",
+                                }}
+                              >
+                                <input
+                                  type="checkbox"
+                                  checked={editDesignations.includes(d)}
+                                  onChange={() => handleDesignationToggle(d)}
+                                  style={{
+                                    marginRight: "8px",
+                                    cursor: "pointer",
+                                  }}
+                                />
+                                {d}
+                              </label>
+                            ))}
+                          {/* Show old designations that are not in the current list */}
+                          {Array.isArray(f.designation) &&
+                            f.designation.some(
+                              (d) =>
+                                !(
+                                  f.staffType === "teaching"
+                                    ? designations.teaching
+                                    : designations["non-teaching"]
+                                ).includes(d)
+                            ) && (
+                              <>
+                                <div
+                                  style={{
+                                    padding: "8px 12px",
+                                    fontSize: "12px",
+                                    fontWeight: "600",
+                                    color: "#666",
+                                    borderBottom: "1px solid #f0f0f0",
+                                    backgroundColor: "#f9f9f9",
+                                  }}
+                                >
+                                  Old Designations (Not in DB)
+                                </div>
+                                {f.designation
+                                  .filter(
+                                    (d) =>
+                                      !(
+                                        f.staffType === "teaching"
+                                          ? designations.teaching
+                                          : designations["non-teaching"]
+                                      ).includes(d)
+                                  )
+                                  .map((d) => (
+                                    <label
+                                      key={d}
+                                      style={{
+                                        display: "flex",
+                                        alignItems: "center",
+                                        padding: "10px 12px",
+                                        borderBottom: "1px solid #f0f0f0",
+                                        cursor: "pointer",
+                                        fontSize: "14px",
+                                        backgroundColor: "#fff9f9",
+                                      }}
+                                    >
+                                      <input
+                                        type="checkbox"
+                                        checked={editDesignations.includes(d)}
+                                        onChange={() =>
+                                          handleDesignationToggle(d)
+                                        }
+                                        style={{
+                                          marginRight: "8px",
+                                          cursor: "pointer",
+                                        }}
+                                      />
+                                      {d}
+                                    </label>
+                                  ))}
+                              </>
+                            )}
+                        </div>
+                      )}
+                    </div>
                   ) : (
-                    <p>{f.designation || "-"}</p>
+                    <p>
+                      {Array.isArray(f.designation)
+                        ? f.designation.join(" & ")
+                        : f.designation || "-"}
+                    </p>
                   )}
                   <label>Role:</label>
                   {isEditing ? (
@@ -599,6 +686,10 @@ const Faculty: React.FC = () => {
                 <li>
                   Required columns: S.No, Employee Code, Employee Name,
                   Department, Designation, Email, Mobile
+                </li>
+                <li>
+                  For multiple designations, use comma-separated values (e.g.,
+                  "Professor, Associate Professor")
                 </li>
                 <li>
                   Not sure about the format?{" "}

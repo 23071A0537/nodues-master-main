@@ -62,6 +62,9 @@ router.get('/students', protect, authorizeRoles('super_admin'), adminController.
 router.get('/faculty', protect, authorizeRoles('super_admin'), adminController.getFaculty);
 router.put('/faculty/:id', protect, authorizeRoles('super_admin'), adminController.updateFaculty);
 
+// Get Designations
+router.get('/designations', protect, authorizeRoles('super_admin'), adminController.getDesignations);
+
 // Dashboard Stats
 router.get('/dashboard-stats', protect, authorizeRoles('super_admin'), adminController.getDashboardStats);
 

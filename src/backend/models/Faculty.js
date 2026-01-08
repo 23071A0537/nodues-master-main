@@ -5,7 +5,7 @@ const facultySchema = new mongoose.Schema({
   facultyId: { type: String, required: true, unique: true }, // mapped to employeeCode
   name: { type: String, required: true },
   department: { type: mongoose.Schema.Types.ObjectId, ref: 'Department' },
-  designation: { type: String, trim: true }, // flexible string, no enum restriction here
+  designation: [{ type: String, trim: true }], // Array to support multiple designations
   email: { type: String, trim: true },
   mobile: { type: String, trim: true },
   role: {
